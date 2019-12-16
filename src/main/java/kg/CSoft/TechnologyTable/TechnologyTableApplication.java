@@ -1,0 +1,13 @@
+package kg.CSoft.TechnologyTable;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class TechnologyTableApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(TechnologyTableApplication.class, args);
+    }
+
+}
