@@ -7,14 +7,18 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.ldap.odm.annotations.*;
 import org.springframework.ldap.odm.annotations.Id;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.naming.Name;
 import javax.naming.ldap.LdapName;
+import javax.persistence.ElementCollection;
+import javax.persistence.FetchType;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
 
 @Entry(objectClasses = {"user"}, base = "DC=transkom,DC=local")
 public class User implements UserDetails {
@@ -25,7 +29,7 @@ public class User implements UserDetails {
     private String fullLogin;
 
     @Attribute(name = "sAMAccountName")
-    private String login;
+    private String username;
 
     @Attribute(name = "cn")
     @DnAttribute("cn")
@@ -49,8 +53,8 @@ public class User implements UserDetails {
     @Attribute(name = "title")
     private String position;
 
-//    @Attribute(name = "memberOf")
-//    private Set<String> memberOf;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     public User() {
     }
@@ -58,28 +62,6 @@ public class User implements UserDetails {
     @JsonCreator
     public User(@JsonProperty("dn") @JsonDeserialize(as = LdapName.class) Name dn) {
         this.dn = dn;
-    }
-
-    private String wrapDN(Name dn) {
-        Enumeration<String> allDnElements = dn.getAll();
-        StringBuilder dnValue = new StringBuilder();
-        while (allDnElements.hasMoreElements()) {
-            dnValue.append(allDnElements.nextElement());
-            dnValue.append(",");
-            dnValue.deleteCharAt(dnValue.length() - 1);
-            return dnValue.toString();
-        }
-
-//        Enumeration<String> allRoleDnElements = dn.getAll();
-//        StringBuilder roleDnValue = new StringBuilder();
-//        while (allRoleDnElements.hasMoreElements()) {
-//            roleDnValue.append(allRoleDnElements.nextElement());
-//            roleDnValue.append(",");
-//            roleDnValue.deleteCharAt(roleDnValue.length() - 1);
-//            return roleDnValue.toString();
-//        }
-//
-        return null;
     }
 
     public String getDn() {
@@ -98,12 +80,8 @@ public class User implements UserDetails {
         this.fullLogin = fullLogin;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getCn() {
@@ -115,10 +93,6 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -126,26 +100,6 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
     }
 
     public void setPassword(String password) {
@@ -191,4 +145,38 @@ public class User implements UserDetails {
     public void setPosition(String position) {
         this.position = position;
     }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
+    }
+
 }

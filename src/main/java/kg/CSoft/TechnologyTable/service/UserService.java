@@ -1,13 +1,11 @@
 package kg.CSoft.TechnologyTable.service;
 
 
-import kg.CSoft.TechnologyTable.dto.user.UserAuthorizationRequest;
 import kg.CSoft.TechnologyTable.entry.User;
-import org.springframework.ldap.core.AttributesMapper;
-import org.springframework.ldap.core.DistinguishedName;
 
 import javax.naming.ldap.LdapName;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     List<User> getAll();
@@ -16,11 +14,6 @@ public interface UserService {
 
     List<User> findByCn(String cn);
 
-    List<User> getByLogin(String login);
-
-//    String getToken(UserAuthorizationRequest authorizationRequest);
-
-    List<String> getUserGroups(String sAMAccountName);
-
+    Optional<User> findByUsername(String username);
 
 }

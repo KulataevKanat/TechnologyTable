@@ -1,6 +1,8 @@
 package kg.CSoft.TechnologyTable.config;
 
 import kg.CSoft.TechnologyTable.security.JwtAuthenticationEntryPoint;
+import kg.CSoft.TechnologyTable.security.JwtSecurityConfigurer;
+import kg.CSoft.TechnologyTable.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +21,6 @@ import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @Value("${ldap.urls}")
     private String AD_URL;
     @Value("${ldap.base.dn}")
@@ -31,6 +31,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private String AD_USERNAME;
     @Value("${ldap.password}")
     private String AD_PASSWORD;
+
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private static final String[] AUTH_WHITELIST = {
             "/v2/api-docs",
@@ -45,15 +47,24 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .csrf()
+                .disable()
+
+                .httpBasic()
+                .disable()
+
+                .cors()
+
+                .and()
+
                 .exceptionHandling()
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+
                 .and()
+
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
-                .httpBasic().disable()
-                .cors()
+
                 .and()
                 .authorizeRequests()
 
@@ -64,6 +75,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/project/{id}").permitAll()
                 .antMatchers("/api/project/{id}").permitAll()
                 .antMatchers("/api/project").permitAll()
+                .antMatchers("/api/project/search").permitAll()
 
                 //HostController
                 .antMatchers("/api/host").permitAll()
@@ -74,7 +86,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/host/getById/{subNetworkId}").permitAll()
 
                 //SubNetworkController
-                .antMatchers("/api/subNetwork").h()
+                .antMatchers("/api/subNetwork").permitAll()
                 .antMatchers("/api/subNetwork/{id}").permitAll()
                 .antMatchers("/api/subNetwork/{id}").permitAll()
                 .antMatchers("/api/subNetwork/{id}").permitAll()
@@ -93,16 +105,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 //SearchController
                 .antMatchers("/api/search").permitAll()
 
+                //Security
+                .antMatchers("/api/security/sign-in").permitAll()
+
                 //Swagger
                 .antMatchers(AUTH_WHITELIST).permitAll()
 
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin()
-                .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint);
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        ;
+
     }
 
     @Override
@@ -110,7 +125,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         auth
                 .ldapAuthentication()
                 .userDnPatterns(AD_DN_PATTERN)
-                .contextSource(contextSource());
+                .contextSource(contextSource())
+        ;
 
     }
 

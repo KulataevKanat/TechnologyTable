@@ -51,12 +51,12 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 
         Set<String> cnList = new HashSet<>();
         userAccess.forEach(element -> {
-            cnList.add(this.userService.findByCn(element).get(0).getCn());
+            cnList.add(userService.findByCn(element).get(0).getCn());
         });
 
         List<User> userList = new ArrayList<>();
         cnList.forEach(element -> {
-            userList.add(this.userService.findByCn(element).get(0));
+            userList.add(userService.findByCn(element).get(0));
         });
 
         project.setCnList(cnList);

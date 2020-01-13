@@ -9,28 +9,23 @@ public class UserDto {
     private String dn;
     private String fullName;
     private String fullLogin;
-    private String login;
+    private String username;
     private String cn;
     private String phone;
     private String address;
     private String mail;
     private String position;
-    private List<String> memberOf;
 
     public UserDto(User user) {
         this.dn = user.getDn();
         this.fullName = user.getFullName();
         this.fullLogin = user.getFullLogin();
-        this.login = user.getLogin();
+        this.username = user.getUsername();
         this.cn = user.getCn();
         this.phone = user.getPhone();
         this.address = user.getAddress();
         this.mail = user.getMail();
         this.position = user.getPosition();
-    }
-
-    public UserDto(List<String> memberOf) {
-        this.memberOf = memberOf;
     }
 
     public static List<UserDto> toList(List<User> list) {
@@ -58,12 +53,12 @@ public class UserDto {
         this.fullName = fullName;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPhone() {
