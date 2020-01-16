@@ -12,10 +12,8 @@ import java.util.List;
 public interface HostRepository extends JpaRepository<Host, Long> {
     List<Host> findAllBySubNetworkId(Long subNetworkId);
 
-    @Query("SELECT h FROM Host h WHERE lower(h.login) LIKE coalesce(lower(cast(CONCAT('%',:login,'%') as text)),lower(h.login)) ")
-    List<Host> hostSearchByLogin(@Param("login") String login);
-
-    @Query("SELECT h FROM Host h WHERE lower(h.ipAddress) LIKE coalesce(lower(cast(CONCAT('%',:ipAddress,'%') as text)),lower(h.ipAddress)) ")
-    List<Host> hostSearchByIpAddress(@Param("ipAddress") String ipAddress);
+    @Query("SELECT h FROM Host h WHERE lower(h.login) LIKE coalesce(lower(cast(CONCAT('%',:search,'%') as text)),lower(h.login)) OR " +
+            "lower(h.ipAddress) LIKE coalesce(lower(cast(CONCAT('%',:search,'%') as text)),lower(h.ipAddress)) ")
+    List<Host> hostSearch(@Param("search") String search);
 
 }

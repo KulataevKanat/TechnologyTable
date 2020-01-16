@@ -19,13 +19,4 @@ public interface SubNetworkService {
     List<SubNetwork> findAllByProjectId(Long projectId);
 
     List<SubNetwork> getAllSubNetworks();
-
-    List<SubNetwork> subNetworkSearchByName(String name);
-
-    List<SubNetwork> subNetworkSearchByMask(String mask);
-
-    List<SubNetwork> subNetworkSearchByAddress(String address);
-
-    List<SubNetwork> subNetworkSearchByVlanName(String vlanName);
-
 }

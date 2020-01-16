@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    @Query("SELECT p FROM Project p WHERE lower(p.name) LIKE coalesce(lower(cast(CONCAT('%',:name,'%') as text)),lower(p.name)) ")
-    List<Project> projectSearchByName(@Param("name") String name);
+    @Query("SELECT p FROM Project p WHERE lower(p.name) LIKE coalesce(lower(cast(CONCAT('%',:search,'%') as text)),lower(p.name)) ")
+    List<Project> projectSearch(@Param("search") String search);
 }

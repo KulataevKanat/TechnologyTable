@@ -10,9 +10,6 @@ public class JwtSecurityConfigurer extends SecurityConfigurerAdapter<DefaultSecu
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    public JwtSecurityConfigurer(JwtTokenProvider jwtTokenProvider) {
-    }
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
         JwtTokenAuthenticationFilter customFilter = new JwtTokenAuthenticationFilter();

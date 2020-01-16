@@ -15,10 +15,6 @@ public class SubNetworkFilter {
     private String description;
     private Long projectId;
 
-    public SubNetworkFilter() {
-    }
-
-
     public SubNetworkFilter(SubNetwork subNetwork) {
         this.id = subNetwork.getId();
         this.name = subNetwork.getName();
@@ -28,14 +24,6 @@ public class SubNetworkFilter {
         this.vlanName = subNetwork.getVlanName();
         this.description = subNetwork.getDescription();
         this.projectId = subNetwork.getProject().getId();
-    }
-
-    public static List<SubNetworkFilter> toList(List<SubNetwork> list) {
-        List<SubNetworkFilter> resultList = new LinkedList<>();
-        for (SubNetwork subNetwork : list) {
-            resultList.add(new SubNetworkFilter(subNetwork));
-        }
-        return resultList;
     }
 
     public Long getId() {

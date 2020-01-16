@@ -18,8 +18,4 @@ public interface ProjectService {
     Project getProjectById(Long id);
 
     List<Project> getAllProjects();
-
-    List<Project> projectSearchByName(String name);
-
-
 }

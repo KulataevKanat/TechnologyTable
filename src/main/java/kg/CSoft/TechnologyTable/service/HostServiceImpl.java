@@ -19,7 +19,6 @@ public class HostServiceImpl implements HostService {
 
     }
 
-
     @Override
     public HostDto removeHostById(Long id) {
         hostRepository.deleteById(id);
@@ -44,15 +43,5 @@ public class HostServiceImpl implements HostService {
     @Override
     public List<Host> getAllHosts() {
         return hostRepository.findAll();
-    }
-
-    @Override
-    public List<Host> hostSearchByLogin(String login) {
-        return hostRepository.hostSearchByLogin(login);
-    }
-
-    @Override
-    public List<Host> hostSearchByIpAddress(String ipAddress) {
-        return hostRepository.hostSearchByIpAddress(ipAddress);
     }
 }

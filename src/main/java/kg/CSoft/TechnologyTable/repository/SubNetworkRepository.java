@@ -12,16 +12,10 @@ import java.util.List;
 public interface SubNetworkRepository extends JpaRepository<SubNetwork, Long> {
     List<SubNetwork> findAllByProjectId(Long projectId);
 
-    @Query("SELECT sn FROM SubNetwork sn WHERE lower(sn.name) LIKE coalesce(lower(cast(CONCAT('%',:name,'%') as text)),lower(sn.name)) ")
-    List<SubNetwork> subNetworkSearchByName(@Param("name") String name);
-
-    @Query("SELECT sn FROM SubNetwork sn WHERE lower(sn.mask) LIKE coalesce(lower(cast(CONCAT('%',:mask,'%') as text)),lower(sn.mask)) ")
-    List<SubNetwork> subNetworkSearchByMask(@Param("mask") String mask);
-
-    @Query("SELECT sn FROM SubNetwork sn WHERE lower(sn.address) LIKE coalesce(lower(cast(CONCAT('%',:address,'%') as text)),lower(sn.address)) ")
-    List<SubNetwork> subNetworkSearchByAddress(@Param("address") String address);
-
-    @Query("SELECT sn FROM SubNetwork sn WHERE lower(sn.vlanName) LIKE coalesce(lower(cast(CONCAT('%',:vlanName,'%') as text)),lower(sn.vlanName)) ")
-    List<SubNetwork> subNetworkSearchByVlanName(@Param("vlanName") String vlanName);
-
+    @Query("SELECT sn FROM SubNetwork sn WHERE lower(sn.name) LIKE coalesce(lower(cast(CONCAT('%',:search,'%') as text)),lower(sn.name)) OR " +
+            "lower(sn.mask) LIKE coalesce(lower(cast(CONCAT('%',:search,'%') as text)),lower(sn.mask)) OR " +
+            "lower(sn.address) LIKE coalesce(lower(cast(CONCAT('%',:search,'%') as text)),lower(sn.address)) OR " +
+            "lower(sn.vlanName) LIKE coalesce(lower(cast(CONCAT('%',:search,'%') as text)),lower(sn.vlanName)) "
+    )
+    List<SubNetwork> subNetworkSearch(@Param("search") String search);
 }

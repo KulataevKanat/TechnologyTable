@@ -18,10 +18,4 @@ public interface HostService {
     List<Host> findAllBySubNetworkId(Long subNetworkId);
 
     List<Host> getAllHosts();
-
-    List<Host> hostSearchByLogin(String login);
-
-    List<Host> hostSearchByIpAddress(String ipAddress);
-
-
 }
