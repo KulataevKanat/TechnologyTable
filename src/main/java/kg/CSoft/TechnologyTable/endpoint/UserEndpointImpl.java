@@ -2,7 +2,6 @@ package kg.CSoft.TechnologyTable.endpoint;
 
 import kg.CSoft.TechnologyTable.dto.user.AuthenticationRequest;
 import kg.CSoft.TechnologyTable.dto.user.UserDto;
-import kg.CSoft.TechnologyTable.repository.UserRepository;
 import kg.CSoft.TechnologyTable.security.JwtTokenProvider;
 import kg.CSoft.TechnologyTable.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +37,6 @@ public class UserEndpointImpl implements UserEndpoint {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     public List<UserDto> getAll() {
         return UserDto.toList(userService.getAll());
@@ -51,7 +47,7 @@ public class UserEndpointImpl implements UserEndpoint {
         try {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtTokenProvider.createToken(username, userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRoles());
+            String token = jwtTokenProvider.createToken(username, userService.findByUsername(username).get(0).getRoles());
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
@@ -73,18 +69,8 @@ public class UserEndpointImpl implements UserEndpoint {
     }
 
     @Override
-    public List getUserGroups(String sAMAccountName) {
-        EqualsFilter filter = new EqualsFilter("sAMAccountName", sAMAccountName);
-        return ldapTemplate.search(DistinguishedName.EMPTY_PATH, filter.encode(), new AttributesMapper() {
-            public Object mapFromAttributes(javax.naming.directory.Attributes attrs) throws javax.naming.NamingException {
-                List<String> memberOf = new ArrayList();
-                for (Enumeration vals = attrs.get("memberOf").getAll(); vals.hasMoreElements(); ) {
-                    memberOf.add((String) vals.nextElement());
-                }
-                return memberOf;
-            }
-        });
-
+    public List<UserDto> findByUsername(String username) {
+        return UserDto.toList(userService.findByUsername(username));
     }
 }
 

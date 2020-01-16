@@ -3,12 +3,15 @@ package kg.CSoft.TechnologyTable.config;
 import kg.CSoft.TechnologyTable.security.JwtAuthenticationEntryPoint;
 import kg.CSoft.TechnologyTable.security.JwtSecurityConfigurer;
 import kg.CSoft.TechnologyTable.security.JwtTokenProvider;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ldap.core.support.BaseLdapPathContextSource;
+import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +20,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.ldap.authentication.BindAuthenticator;
+import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
+import org.springframework.security.ldap.authentication.LdapAuthenticator;
+import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
+import org.springframework.security.ldap.ppolicy.PasswordPolicyAwareContextSource;
+import org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator;
+import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -31,6 +43,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private String AD_USERNAME;
     @Value("${ldap.password}")
     private String AD_PASSWORD;
+
+    @Autowired
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -95,12 +110,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
                 //UserController
                 .antMatchers("/api/user").permitAll()
+                .antMatchers("/api/user/findByUsername").permitAll()
                 .antMatchers("/api/user/findByDn/{dn}").permitAll()
                 .antMatchers("/api/user/findByCn/{cn}").permitAll()
-                .antMatchers("/api/user/findAllMemberOfUser").permitAll()
-
-                //RoleController
-                .antMatchers("/api/role").permitAll()
 
                 //SearchController
                 .antMatchers("/api/search").permitAll()
@@ -120,22 +132,34 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .ldapAuthentication()
-                .userDnPatterns(AD_DN_PATTERN)
-                .contextSource(contextSource())
-        ;
-
+    public void initIntegration() {
+        try {
+            authenticationManagerBuilder
+                    .authenticationProvider(ldapAuthenticationProvider());
+        } catch (Exception e) {
+            throw new BeanInitializationException("Security configuration failed", e);
+        }
     }
 
     @Bean
-    public BaseLdapPathContextSource contextSource() throws Exception {
-        DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(AD_URL);
+    public LdapAuthenticationProvider ldapAuthenticationProvider() throws Exception {
+        LdapAuthenticationProvider lAP = new LdapAuthenticationProvider(ldapAuthenticator());
+        return lAP;
+    }
+
+    @Bean
+    public LdapContextSource ldapContextSource() throws Exception {
+        PasswordPolicyAwareContextSource contextSource = new PasswordPolicyAwareContextSource(AD_URL);
         contextSource.setUserDn(AD_USERNAME);
         contextSource.setPassword(AD_PASSWORD);
         return contextSource;
+    }
+
+    @Bean
+    public LdapAuthenticator ldapAuthenticator() throws Exception {
+        BindAuthenticator authenticator = new BindAuthenticator(ldapContextSource());
+        authenticator.setUserDnPatterns(new String[]{AD_DN_PATTERN});
+        return authenticator;
     }
 
     @Bean

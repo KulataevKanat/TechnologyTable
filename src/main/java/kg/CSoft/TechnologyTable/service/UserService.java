@@ -14,6 +14,6 @@ public interface UserService {
 
     List<User> findByCn(String cn);
 
-    Optional<User> findByUsername(String username);
+    List<User> findByUsername(String username);
 
 }

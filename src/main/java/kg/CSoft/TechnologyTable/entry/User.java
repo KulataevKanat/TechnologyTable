@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @DnAttribute("cn")
     private String cn;
 
-    @JsonIgnore
+    @Attribute(name = "userPassword")
     private String password;
 
     @Attribute(name = "description")
@@ -53,6 +53,7 @@ public class User implements UserDetails {
     @Attribute(name = "title")
     private String position;
 
+    @Attribute(name = "memberOf")
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -84,6 +85,10 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public String getCn() {
         return cn;
     }
@@ -95,11 +100,6 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
     }
 
     public void setPassword(String password) {
@@ -178,5 +178,6 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
     }
+
 
 }

@@ -2,6 +2,7 @@ package kg.CSoft.TechnologyTable.controller;
 
 import kg.CSoft.TechnologyTable.dto.user.*;
 import kg.CSoft.TechnologyTable.endpoint.UserEndpoint;
+import kg.CSoft.TechnologyTable.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +26,12 @@ public class UserController {
     }
 
     @GetMapping("/findByCn/{cn}")
-    public List<UserDto> findByCn(@PathVariable String cn){
+    public List<UserDto> findByCn(@PathVariable String cn) {
         return userEndpoint.findByCn(cn);
     }
 
-    @GetMapping("/findAllMemberOfUser")
-    public List findAllMemberOfUser(@RequestParam String sAMAccountName) {
-        return userEndpoint.getUserGroups(sAMAccountName);
+    @GetMapping("/findByUsername")
+    public List<UserDto> findByUsername(@RequestParam String username) {
+        return userEndpoint.findByUsername(username);
     }
 }

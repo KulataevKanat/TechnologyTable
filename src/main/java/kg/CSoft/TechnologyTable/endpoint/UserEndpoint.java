@@ -15,6 +15,6 @@ public interface UserEndpoint {
 
     List<UserDto> findByCn(String cn);
 
-    List getUserGroups(String sAMAccountName);
+    List<UserDto> findByUsername(String username);
 
 }

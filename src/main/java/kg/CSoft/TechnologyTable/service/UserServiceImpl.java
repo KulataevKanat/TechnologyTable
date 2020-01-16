@@ -1,14 +1,9 @@
 package kg.CSoft.TechnologyTable.service;
 
 import kg.CSoft.TechnologyTable.entry.User;
-import kg.CSoft.TechnologyTable.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.AttributesMapper;
-import org.springframework.ldap.core.DistinguishedName;
 import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.query.LdapQueryBuilder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +14,6 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     @Autowired
     private LdapTemplate ldapTemplate;
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -39,9 +32,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-//        return ldapTemplate.find(LdapQueryBuilder.query().where("userPrincipalName").is(username), User.class);
-        return userRepository.findByUsername(username);
+    public List<User> findByUsername(String username) {
+        return ldapTemplate.find(LdapQueryBuilder.query().where("sAMAccountName").is(username), User.class);
     }
 
 }

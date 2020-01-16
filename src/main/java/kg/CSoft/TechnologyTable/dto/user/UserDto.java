@@ -2,30 +2,36 @@ package kg.CSoft.TechnologyTable.dto.user;
 
 import kg.CSoft.TechnologyTable.entry.User;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDto {
     private String dn;
     private String fullName;
     private String fullLogin;
     private String username;
+    private String password;
     private String cn;
     private String phone;
     private String address;
     private String mail;
     private String position;
+    private List<String> role;
 
     public UserDto(User user) {
         this.dn = user.getDn();
         this.fullName = user.getFullName();
         this.fullLogin = user.getFullLogin();
         this.username = user.getUsername();
+        this.password = user.getPassword();
         this.cn = user.getCn();
         this.phone = user.getPhone();
         this.address = user.getAddress();
         this.mail = user.getMail();
         this.position = user.getPosition();
+        this.role = user.getRoles();
     }
 
     public static List<UserDto> toList(List<User> list) {
@@ -35,7 +41,6 @@ public class UserDto {
         }
         return resultList;
     }
-
 
     public String getDn() {
         return dn;
@@ -59,6 +64,15 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
@@ -107,6 +121,14 @@ public class UserDto {
 
     public void setFullLogin(String fullLogin) {
         this.fullLogin = fullLogin;
+    }
+
+    public List<String> getRole() {
+        return role;
+    }
+
+    public void setRole(List<String> role) {
+        this.role = role;
     }
 }
 
