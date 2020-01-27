@@ -16,7 +16,6 @@ public class Search {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<SubNetwork> subNetworkList = new ArrayList<>();
 
-
     @ElementCollection(fetch = FetchType.EAGER)
     private  List<Project> projectList = new ArrayList<>();
 

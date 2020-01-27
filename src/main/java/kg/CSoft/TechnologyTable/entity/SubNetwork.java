@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class SubNetwork {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "integer")
     private Long id;
 
     @Column(name = "name", columnDefinition = "varchar")
@@ -33,17 +32,6 @@ public class SubNetwork {
     private Project project;
 
     public SubNetwork() {
-    }
-
-
-    public SubNetwork(String name, String mask, String address, Integer vlanId, String vlanName, String description, Project project) {
-        this.name = name;
-        this.mask = mask;
-        this.address = address;
-        this.vlanId = vlanId;
-        this.vlanName = vlanName;
-        this.description = description;
-        this.project = project;
     }
 
     public Long getId() {

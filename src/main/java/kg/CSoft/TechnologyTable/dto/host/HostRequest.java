@@ -7,10 +7,6 @@ public class HostRequest {
     private String password;
     private Long subNetworkId;
 
-    public HostRequest() {
-    }
-
-
     public String getIpAddress() {
         return ipAddress;
     }

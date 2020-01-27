@@ -2,10 +2,8 @@ package kg.CSoft.TechnologyTable.dto.user;
 
 import kg.CSoft.TechnologyTable.entry.User;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class UserDto {
     private String dn;

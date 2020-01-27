@@ -1,10 +1,6 @@
 package kg.CSoft.TechnologyTable.entity;
 
-import kg.CSoft.TechnologyTable.entry.User;
-
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,7 +8,6 @@ import java.util.Set;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "integer")
     private Long id;
 
     @Column(name = "name", columnDefinition = "varchar")
@@ -30,11 +25,6 @@ public class Project {
 
 
     public Project() {
-    }
-
-    public Project(String name, String description) {
-        this.name = name;
-        this.description = description;
     }
 
     public Long getId() {

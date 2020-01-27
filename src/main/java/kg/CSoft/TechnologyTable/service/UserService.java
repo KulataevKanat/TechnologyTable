@@ -5,7 +5,6 @@ import kg.CSoft.TechnologyTable.entry.User;
 
 import javax.naming.ldap.LdapName;
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
     List<User> getAll();

@@ -1,6 +1,8 @@
 package kg.CSoft.TechnologyTable.security;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -16,10 +18,6 @@ public class JwtTokenAuthenticationFilter extends GenericFilterBean {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-//    public JwtTokenAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
-//        this.jwtTokenProvider = jwtTokenProvider;
-//    }
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
             throws IOException, ServletException {
@@ -33,10 +31,6 @@ public class JwtTokenAuthenticationFilter extends GenericFilterBean {
             }
         }
         filterChain.doFilter(req, res);
-    }
-
-    public JwtTokenProvider getJwtTokenProvider() {
-        return jwtTokenProvider;
     }
 
     public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {

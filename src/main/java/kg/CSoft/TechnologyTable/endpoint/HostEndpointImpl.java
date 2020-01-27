@@ -28,9 +28,13 @@ public class HostEndpointImpl implements HostEndpoint {
     @Override
     public HostDto addHost(HostRequest hostRequest) {
         SubNetwork subNetwork = subNetworkService.getSubNetworkById(hostRequest.getSubNetworkId());
-        Host host = new Host(hostRequest.getIpAddress(), hostRequest.getDescription(), hostRequest.getLogin(), hostRequest.getPassword(), subNetwork);
-        hostService.addHost(host);
-        return new HostDto(host);
+        Host host = new Host();
+        host.setIpAddress(hostRequest.getIpAddress());
+        host.setDescription(hostRequest.getDescription());
+        host.setLogin(hostRequest.getLogin());
+        host.setPassword(hostRequest.getPassword());
+        host.setSubNetwork(subNetwork);
+        return new HostDto(hostService.addHost(host));
 
     }
 

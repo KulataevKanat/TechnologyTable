@@ -14,9 +14,6 @@ public class HostDto {
     private String password;
     private SubNetworkFilter subNetwork;
 
-    public HostDto() {
-    }
-
     public HostDto(Host host) {
         this.id = host.getId();
         this.ipAddress = host.getIpAddress();
@@ -33,7 +30,6 @@ public class HostDto {
         }
         return resultList;
     }
-
 
     public Long getId() {
         return id;

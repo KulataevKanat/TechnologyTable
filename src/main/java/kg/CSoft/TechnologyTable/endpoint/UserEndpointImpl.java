@@ -2,19 +2,18 @@ package kg.CSoft.TechnologyTable.endpoint;
 
 import kg.CSoft.TechnologyTable.dto.user.AuthenticationRequest;
 import kg.CSoft.TechnologyTable.dto.user.UserDto;
+import kg.CSoft.TechnologyTable.entry.User;
 import kg.CSoft.TechnologyTable.security.JwtTokenProvider;
 import kg.CSoft.TechnologyTable.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ldap.core.AttributesMapper;
-import org.springframework.ldap.core.DistinguishedName;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
+import org.springframework.ldap.filter.Filter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.naming.ldap.LdapName;
@@ -27,6 +26,9 @@ import static org.springframework.http.ResponseEntity.ok;
 public class UserEndpointImpl implements UserEndpoint {
     @Autowired
     private UserService userService;
+
+    @Value("${ldap.base.dn}")
+    private String AD_BASE_DN;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -46,9 +48,9 @@ public class UserEndpointImpl implements UserEndpoint {
     public ResponseEntity<?> signIn(AuthenticationRequest data) {
         try {
             String username = data.getUsername();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
+            Filter filter = new EqualsFilter("sAMAccountName", username);
+            ldapTemplate.authenticate(AD_BASE_DN, filter.encode(), data.getPassword());
             String token = jwtTokenProvider.createToken(username, userService.findByUsername(username).get(0).getRoles());
-
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);

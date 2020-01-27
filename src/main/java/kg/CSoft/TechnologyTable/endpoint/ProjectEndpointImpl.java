@@ -20,7 +20,9 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
     @Override
 
     public ProjectDto addProject(ProjectRequest projectRequest) {
-        Project project = new Project(projectRequest.getName(), projectRequest.getDescription());
+        Project project = new Project();
+        project.setName(projectRequest.getName());
+        project.setDescription(projectRequest.getDescription());
         projectService.addProject(project);
         return new ProjectDto(project);
     }

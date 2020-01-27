@@ -21,9 +21,15 @@ public class SubNetworkEndpointImpl implements SubNetworkEndpoint {
     @Override
     public SubNetworkDto addSubNetwork(SubNetworkRequest subNetworkRequest) {
         Project project = projectService.getProjectById(subNetworkRequest.getProjectId());
-        SubNetwork subNetwork = new SubNetwork(subNetworkRequest.getName(), subNetworkRequest.getMask(), subNetworkRequest.getAddress(), subNetworkRequest.getVlanId(), subNetworkRequest.getVlanName(), subNetworkRequest.getDescription(), project);
-        subNetworkService.addSubNetwork(subNetwork);
-        return new SubNetworkDto(subNetwork);
+        SubNetwork subNetwork = new SubNetwork();
+        subNetwork.setName(subNetworkRequest.getName());
+        subNetwork.setMask(subNetworkRequest.getMask());
+        subNetwork.setAddress(subNetworkRequest.getAddress());
+        subNetwork.setVlanId(subNetworkRequest.getVlanId());
+        subNetwork.setVlanName(subNetworkRequest.getVlanName());
+        subNetwork.setDescription(subNetworkRequest.getDescription());
+        subNetwork.setProject(project);
+        return new SubNetworkDto(subNetworkService.addSubNetwork(subNetwork));
     }
 
     @Override

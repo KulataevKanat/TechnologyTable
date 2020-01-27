@@ -16,9 +16,6 @@ public class SubNetworkDto {
     private String description;
     private ProjectDto project;
 
-    public SubNetworkDto() {
-    }
-
     public SubNetworkDto(SubNetwork subNetwork) {
         this.id = subNetwork.getId();
         this.name = subNetwork.getName();
@@ -29,7 +26,6 @@ public class SubNetworkDto {
         this.description = subNetwork.getDescription();
         this.project = new ProjectDto(subNetwork.getProject());
     }
-
 
     public static List<SubNetworkDto> toList(List<SubNetwork> list) {
         List<SubNetworkDto> resultList = new LinkedList<>();

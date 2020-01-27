@@ -27,11 +27,6 @@ public class ProjectController {
         return new ResponseEntity<>(projectEndpoint.addProject(projectRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("/addAccess/{id}")
-    public ResponseEntity<ProjectAccessDto> addAccess(@RequestBody List<String> userAccess, @PathVariable Long id) {
-        return new ResponseEntity<>(projectEndpoint.addAccess(userAccess, id), HttpStatus.CREATED);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<ProjectDto> removeProjectById(@RequestBody Long id) {
         return new ResponseEntity<>(projectEndpoint.removeProjectById(id), HttpStatus.OK);
@@ -40,6 +35,11 @@ public class ProjectController {
     @PutMapping("/{id}")
     public ResponseEntity<ProjectDto> changeProject(@RequestBody ProjectRequest projectRequest, @PathVariable Long id) {
         return new ResponseEntity<>(projectEndpoint.changeProject(projectRequest, id), HttpStatus.OK);
+    }
+
+    @PutMapping("/addAccess/{id}")
+    public ResponseEntity<ProjectAccessDto> addAccess(@RequestBody List<String> userAccess, @PathVariable Long id) {
+        return new ResponseEntity<>(projectEndpoint.addAccess(userAccess, id), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

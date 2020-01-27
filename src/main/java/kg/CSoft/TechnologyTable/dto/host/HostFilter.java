@@ -2,9 +2,6 @@ package kg.CSoft.TechnologyTable.dto.host;
 
 import kg.CSoft.TechnologyTable.entity.Host;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class HostFilter {
     private Long id;
     private String ipAddress;
@@ -12,9 +9,6 @@ public class HostFilter {
     private String login;
     private String password;
     private Long subNetworkId;
-
-    public HostFilter() {
-    }
 
     public HostFilter(Host host) {
         this.id = host.getId();
@@ -24,15 +18,6 @@ public class HostFilter {
         this.password = host.getPassword();
         this.subNetworkId = host.getSubNetwork().getId();
     }
-
-    public static List<HostFilter> toList(List<Host> list) {
-        List<HostFilter> resultList = new LinkedList<>();
-        for (Host host : list) {
-            resultList.add(new HostFilter(host));
-        }
-        return resultList;
-    }
-
 
     public Long getId() {
         return id;

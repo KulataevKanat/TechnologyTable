@@ -2,18 +2,18 @@ package kg.CSoft.TechnologyTable.security;
 
 import io.jsonwebtoken.*;
 import kg.CSoft.TechnologyTable.config.JwtProperties;
+
+import kg.CSoft.TechnologyTable.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 
 @Component
 public class JwtTokenProvider {
@@ -21,9 +21,9 @@ public class JwtTokenProvider {
     private JwtProperties jwtProperties;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
-    private String secretKey;
+    private String secretKey = "secret";
 
     @PostConstruct
     protected void init() {
@@ -34,13 +34,8 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String username, List<String> roles) {
-
-        Claims claims = Jwts
-                .claims()
-                .setSubject(username);
-        claims
-                .put("roles", roles);
-
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("roles", roles);
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtProperties.getValidityInMs());
 
@@ -50,8 +45,7 @@ public class JwtTokenProvider {
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact()
-                ;
+                .compact();
     }
 
     public Authentication getAuthentication(String token) {

@@ -40,7 +40,7 @@ public class SubNetworkController {
     }
 
     @GetMapping("/getById/{projectId}")
-    public List<SubNetworkDto> getSubnetworksByProjectId(@PathVariable long projectId) {
+    public List<SubNetworkDto> getSubNetworksByProjectId(@PathVariable long projectId) {
         return subNetworkEndpoint.findAllByProjectId(projectId);
     }
 

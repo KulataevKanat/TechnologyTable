@@ -2,6 +2,8 @@ package kg.CSoft.TechnologyTable.service;
 
 import kg.CSoft.TechnologyTable.entry.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.ldap.core.LdapOperations;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.query.LdapQueryBuilder;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,6 @@ public class UserServiceImpl implements UserService {
     private LdapTemplate ldapTemplate;
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> getAll() {
         return ldapTemplate.findAll(User.class);
     }
@@ -35,6 +36,5 @@ public class UserServiceImpl implements UserService {
     public List<User> findByUsername(String username) {
         return ldapTemplate.find(LdapQueryBuilder.query().where("sAMAccountName").is(username), User.class);
     }
-
 }
 

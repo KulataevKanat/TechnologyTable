@@ -1,16 +1,20 @@
 package kg.CSoft.TechnologyTable.config;
 
 import kg.CSoft.TechnologyTable.security.JwtAuthenticationEntryPoint;
+import kg.CSoft.TechnologyTable.security.JwtSecurityConfigurer;
+import kg.CSoft.TechnologyTable.security.JwtTokenProvider;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +25,7 @@ import org.springframework.security.ldap.authentication.LdapAuthenticator;
 import org.springframework.security.ldap.ppolicy.PasswordPolicyAwareContextSource;
 
 @Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Value("${ldap.urls}")
@@ -38,6 +43,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     private static final String[] AUTH_WHITELIST = {
             "/v2/api-docs",
@@ -73,42 +81,41 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
-                //ProjectController
-                .antMatchers("/api/project/addAccess/{id}").permitAll()
-                .antMatchers("/api/project").permitAll()
-                .antMatchers("/api/project/{id}").permitAll()
-                .antMatchers("/api/project/{id}").permitAll()
-                .antMatchers("/api/project/{id}").permitAll()
-                .antMatchers("/api/project").permitAll()
-                .antMatchers("/api/project/search").permitAll()
-
-                //HostController
-                .antMatchers("/api/host").permitAll()
-                .antMatchers("/api/host/{id}").permitAll()
-                .antMatchers("/api/host/{id}").permitAll()
-                .antMatchers("/api/host/{id}").permitAll()
-                .antMatchers("/api/host/").permitAll()
-                .antMatchers("/api/host/getById/{subNetworkId}").permitAll()
-
-                //SubNetworkController
-                .antMatchers("/api/subNetwork").permitAll()
-                .antMatchers("/api/subNetwork/{id}").permitAll()
-                .antMatchers("/api/subNetwork/{id}").permitAll()
-                .antMatchers("/api/subNetwork/{id}").permitAll()
-                .antMatchers("/api/subNetwork/getById/{projectId}").permitAll()
-                .antMatchers("/api/subNetwork").permitAll()
-
-                //UserController
-                .antMatchers("/api/user").permitAll()
-                .antMatchers("/api/user/findByUsername").permitAll()
-                .antMatchers("/api/user/findByDn/{dn}").permitAll()
-                .antMatchers("/api/user/findByCn/{cn}").permitAll()
-
-                //SearchController
-                .antMatchers("/api/search").permitAll()
-
                 //Security
-                .antMatchers("/api/security/sign-in").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/security/sign-in").permitAll()
+
+                //Host
+                .antMatchers(HttpMethod.POST, "/api/host").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/host/{id}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/host/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/host/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/host/getById/{subNetworkId}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/host/").permitAll()
+
+                //Project
+                .antMatchers(HttpMethod.POST, "/api/project").hasAuthority("CN=Administrators,CN=Builtin,DC=transkom,DC=local")
+                .antMatchers(HttpMethod.DELETE, "/api/project/{id}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/project/{id}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/project/addAccess/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/project/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/project").permitAll()
+
+                //Search
+                .antMatchers(HttpMethod.GET, "/api/search").permitAll()
+
+                //SubNetwork
+                .antMatchers(HttpMethod.POST, "/api/subNetwork").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/subNetwork/{id}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/subNetwork/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/subNetwork/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/subNetwork/getById/{projectId}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/subNetwork").permitAll()
+
+                //User
+                .antMatchers(HttpMethod.GET, "/api/user").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/findByDn/{dn}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/findByCn/{cn}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/findByUsername").permitAll()
 
                 //Swagger
                 .antMatchers(AUTH_WHITELIST).permitAll()
@@ -118,6 +125,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .apply(new JwtSecurityConfigurer(jwtTokenProvider))
         ;
 
     }
@@ -162,5 +171,4 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

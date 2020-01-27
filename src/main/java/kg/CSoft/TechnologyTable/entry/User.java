@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @DnAttribute("cn")
     private String cn;
 
-    @Attribute(name = "userPassword")
+    @Attribute(name = "password")
     private String password;
 
     @Attribute(name = "description")

@@ -29,7 +29,6 @@ public class ProjectAccessDto {
         return resultList;
     }
 
-
     public void setId(Long id) {
         this.id = id;
     }

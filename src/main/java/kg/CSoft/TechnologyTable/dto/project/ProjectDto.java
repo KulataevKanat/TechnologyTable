@@ -10,9 +10,6 @@ public class ProjectDto {
     private String name;
     private String description;
 
-    public ProjectDto() {
-    }
-
     public ProjectDto(Project project) {
         this.id = project.getId();
         this.name = project.getName();

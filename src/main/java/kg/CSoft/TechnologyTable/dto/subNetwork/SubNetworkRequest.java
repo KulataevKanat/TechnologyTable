@@ -1,7 +1,5 @@
 package kg.CSoft.TechnologyTable.dto.subNetwork;
 
-import kg.CSoft.TechnologyTable.entity.SubNetwork;
-
 public class SubNetworkRequest {
     private String name;
     private String mask;
@@ -10,20 +8,6 @@ public class SubNetworkRequest {
     private String vlanName;
     private String description;
     private Long projectId;
-
-    public SubNetworkRequest() {
-    }
-
-
-    public SubNetworkRequest(SubNetwork subNetwork) {
-        this.name = subNetwork.getName();
-        this.mask = subNetwork.getMask();
-        this.address = subNetwork.getAddress();
-        this.vlanId = subNetwork.getVlanId();
-        this.vlanName = subNetwork.getVlanName();
-        this.description = subNetwork.getDescription();
-        this.projectId = subNetwork.getProject().getId();
-    }
 
     public String getName() {
         return name;

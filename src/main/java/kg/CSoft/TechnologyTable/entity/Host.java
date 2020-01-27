@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class Host {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "integer")
     private Long id;
 
     @Column(name = "ip_address", columnDefinition = "varchar(20)")
@@ -27,15 +26,6 @@ public class Host {
     private SubNetwork subNetwork;
 
     public Host() {
-    }
-
-
-    public Host(String ipAddress, String description, String login, String password, SubNetwork subNetwork) {
-        this.ipAddress = ipAddress;
-        this.description = description;
-        this.login = login;
-        this.password = password;
-        this.subNetwork = subNetwork;
     }
 
     public Long getId() {
