@@ -1,6 +1,7 @@
 package kg.CSoft.TechnologyTable.dto.project;
 
 import kg.CSoft.TechnologyTable.dto.host.HostDto;
+import kg.CSoft.TechnologyTable.dto.user.UserDto;
 import kg.CSoft.TechnologyTable.entity.Host;
 import kg.CSoft.TechnologyTable.entity.Project;
 import kg.CSoft.TechnologyTable.entry.User;
@@ -12,9 +13,9 @@ public class ProjectAccessDto {
     private Long id;
     private String name;
     private String description;
-    private List<User> userList;
+    private List<UserDto> userList;
 
-    public ProjectAccessDto(Project project, List<User> userList) {
+    public ProjectAccessDto(Project project, List<UserDto> userList) {
         this.id = project.getId();
         this.name = project.getName();
         this.description = project.getDescription();
@@ -53,11 +54,11 @@ public class ProjectAccessDto {
         this.description = description;
     }
 
-    public List<User> getUserList() {
+    public List<UserDto> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<UserDto> userList) {
         this.userList = userList;
     }
 }

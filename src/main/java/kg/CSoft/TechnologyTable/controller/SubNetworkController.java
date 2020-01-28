@@ -25,7 +25,7 @@ public class SubNetworkController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SubNetworkDto> removeSubNetworkById(@RequestBody Long id) {
+    public ResponseEntity<SubNetworkDto> removeSubNetworkById(@PathVariable Long id) {
         return new ResponseEntity<>(subNetworkEndpoint.removeSubNetwork(id), HttpStatus.OK);
     }
 

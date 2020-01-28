@@ -1,6 +1,7 @@
 package kg.CSoft.TechnologyTable.endpoint;
 
 import kg.CSoft.TechnologyTable.dto.project.*;
+import kg.CSoft.TechnologyTable.dto.user.UserDto;
 import kg.CSoft.TechnologyTable.entity.Project;
 import kg.CSoft.TechnologyTable.entry.User;
 import kg.CSoft.TechnologyTable.service.ProjectService;
@@ -51,7 +52,7 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
     public ProjectAccessDto addAccess(List<String> userAccess, Long id) {
         Project project = projectService.getProjectById(id);
 
-        Set<String> cnList = new HashSet<>();
+        List<String> cnList = new ArrayList<>();
         userAccess.forEach(element -> {
             cnList.add(userService.findByCn(element).get(0).getCn());
         });
@@ -63,7 +64,7 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 
         project.setCnList(cnList);
         projectService.addAccess(project);
-        return new ProjectAccessDto(project, userList);
+        return new ProjectAccessDto(project, UserDto.toList(userList));
 
     }
 

@@ -28,7 +28,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProjectDto> removeProjectById(@RequestBody Long id) {
+    public ResponseEntity<ProjectDto> removeProjectById(@PathVariable Long id) {
         return new ResponseEntity<>(projectEndpoint.removeProjectById(id), HttpStatus.OK);
     }
 

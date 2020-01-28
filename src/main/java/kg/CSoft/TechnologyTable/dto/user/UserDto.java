@@ -1,16 +1,14 @@
 package kg.CSoft.TechnologyTable.dto.user;
 
 import kg.CSoft.TechnologyTable.entry.User;
-
 import java.util.LinkedList;
 import java.util.List;
 
 public class UserDto {
     private String dn;
     private String fullName;
-    private String fullLogin;
-    private String username;
-    private String password;
+    private String userPrincipalName;
+    private String sAMAccountName;
     private String cn;
     private String phone;
     private String address;
@@ -21,9 +19,8 @@ public class UserDto {
     public UserDto(User user) {
         this.dn = user.getDn();
         this.fullName = user.getFullName();
-        this.fullLogin = user.getFullLogin();
-        this.username = user.getUsername();
-        this.password = user.getPassword();
+        this.userPrincipalName = user.getFullLogin();
+        this.sAMAccountName = user.getUsername();
         this.cn = user.getCn();
         this.phone = user.getPhone();
         this.address = user.getAddress();
@@ -56,21 +53,28 @@ public class UserDto {
         this.fullName = fullName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserPrincipalName() {
+        return userPrincipalName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserPrincipalName(String userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
     }
 
-
-    public String getPassword() {
-        return password;
+    public String getsAMAccountName() {
+        return sAMAccountName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setsAMAccountName(String sAMAccountName) {
+        this.sAMAccountName = sAMAccountName;
+    }
+
+    public String getCn() {
+        return cn;
+    }
+
+    public void setCn(String cn) {
+        this.cn = cn;
     }
 
     public String getPhone() {
@@ -103,22 +107,6 @@ public class UserDto {
 
     public void setPosition(String position) {
         this.position = position;
-    }
-
-    public String getCn() {
-        return cn;
-    }
-
-    public void setCn(String cn) {
-        this.cn = cn;
-    }
-
-    public String getFullLogin() {
-        return fullLogin;
-    }
-
-    public void setFullLogin(String fullLogin) {
-        this.fullLogin = fullLogin;
     }
 
     public List<String> getRole() {

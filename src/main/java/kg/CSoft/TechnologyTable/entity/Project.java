@@ -1,6 +1,8 @@
 package kg.CSoft.TechnologyTable.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,12 +18,12 @@ public class Project {
     @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "users_cn",
             joinColumns = @JoinColumn(name = "project_id"),
             indexes = @Index(columnList = "project_id"))
     @Column(name = "user_cn", nullable = false)
-    private Set<String> cnList;
+    private List<String> cnList = new ArrayList<>();
 
 
     public Project() {
@@ -51,11 +53,11 @@ public class Project {
         this.description = description;
     }
 
-    public Set<String> getCnList() {
+    public List<String> getCnList() {
         return cnList;
     }
 
-    public void setCnList(Set<String> cnList) {
+    public void setCnList(List<String> cnList) {
         this.cnList = cnList;
     }
 }
