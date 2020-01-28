@@ -25,6 +25,9 @@ public class Project {
     @Column(name = "user_cn", nullable = false)
     private List<String> cnList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<SubNetwork> subNetworks;
+
 
     public Project() {
     }

@@ -86,10 +86,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .hasAuthority("CN=Administrators,CN=Builtin,DC=transkom,DC=local")
 
                 //ROLE_USER
-                .hasAuthority("")
+                .hasAuthority("CN=Domain Users,CN=Users,DC=transkom,DC=local")
 
                 //ROLE_ADMIN and ROLE_USER
-                .hasAnyAuthority("CN=Administrators,CN=Builtin,DC=transkom,DC=local", "")
+                .hasAnyAuthority("CN=Administrators,CN=Builtin,DC=transkom,DC=local", "CN=Domain Users,CN=Users,DC=transkom,DC=local")
                  */
 
                 //Security
@@ -101,7 +101,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/host/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/host/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/host/getById/{subNetworkId}").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/host/").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/host").permitAll()
 
                 //Project
                 .antMatchers(HttpMethod.POST, "/api/project").permitAll()

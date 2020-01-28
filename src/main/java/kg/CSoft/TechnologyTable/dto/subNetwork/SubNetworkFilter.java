@@ -10,7 +10,7 @@ public class SubNetworkFilter {
     private String name;
     private String mask;
     private String address;
-    private Integer vlanId;
+    private Integer vlanIdentification;
     private String vlanName;
     private String description;
     private Long projectId;
@@ -20,7 +20,7 @@ public class SubNetworkFilter {
         this.name = subNetwork.getName();
         this.mask = subNetwork.getMask();
         this.address = subNetwork.getAddress();
-        this.vlanId = subNetwork.getVlanId();
+        this.vlanIdentification = subNetwork.getVlanIdentification();
         this.vlanName = subNetwork.getVlanName();
         this.description = subNetwork.getDescription();
         this.projectId = subNetwork.getProject().getId();
@@ -58,12 +58,12 @@ public class SubNetworkFilter {
         this.address = address;
     }
 
-    public Integer getVlanId() {
-        return vlanId;
+    public Integer getVlanIdentification() {
+        return vlanIdentification;
     }
 
-    public void setVlanId(Integer vlanId) {
-        this.vlanId = vlanId;
+    public void setVlanIdentification(Integer vlanIdentification) {
+        this.vlanIdentification = vlanIdentification;
     }
 
     public String getVlanName() {

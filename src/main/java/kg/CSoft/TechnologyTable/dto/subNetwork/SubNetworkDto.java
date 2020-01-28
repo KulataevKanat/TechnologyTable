@@ -11,7 +11,7 @@ public class SubNetworkDto {
     private String name;
     private String mask;
     private String address;
-    private Integer vlanId;
+    private Integer vlanIdentification;
     private String vlanName;
     private String description;
     private ProjectDto project;
@@ -21,7 +21,7 @@ public class SubNetworkDto {
         this.name = subNetwork.getName();
         this.mask = subNetwork.getMask();
         this.address = subNetwork.getAddress();
-        this.vlanId = subNetwork.getVlanId();
+        this.vlanIdentification = subNetwork.getVlanIdentification();
         this.vlanName = subNetwork.getVlanName();
         this.description = subNetwork.getDescription();
         this.project = new ProjectDto(subNetwork.getProject());
@@ -67,12 +67,12 @@ public class SubNetworkDto {
         this.address = address;
     }
 
-    public Integer getVlanId() {
-        return vlanId;
+    public Integer getVlanIdentification() {
+        return vlanIdentification;
     }
 
-    public void setVlanId(Integer vlanId) {
-        this.vlanId = vlanId;
+    public void setVlanIdentification(Integer vlanIdentification) {
+        this.vlanIdentification = vlanIdentification;
     }
 
     public String getVlanName() {

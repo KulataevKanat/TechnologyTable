@@ -2,6 +2,8 @@ package kg.CSoft.TechnologyTable.entity;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Table(name = "sub_network")
 public class SubNetwork {
@@ -18,8 +20,8 @@ public class SubNetwork {
     @Column(name = "address", columnDefinition = "varchar")
     private String address;
 
-    @Column(name = "vlan_id", columnDefinition = "integer")
-    private Integer vlanId;
+    @Column(name = "vlan_identification ", columnDefinition = "integer")
+    private Integer vlanIdentification;
 
     @Column(name = "vlan_name", columnDefinition = "varchar")
     private String vlanName;
@@ -27,8 +29,8 @@ public class SubNetwork {
     @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", columnDefinition = "integer")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", columnDefinition = "int4")
     private Project project;
 
     public SubNetwork() {
@@ -66,12 +68,12 @@ public class SubNetwork {
         this.address = address;
     }
 
-    public Integer getVlanId() {
-        return vlanId;
+    public Integer getVlanIdentification() {
+        return vlanIdentification;
     }
 
-    public void setVlanId(Integer vlanId) {
-        this.vlanId = vlanId;
+    public void setVlanIdentification(Integer vlanIdentification) {
+        this.vlanIdentification = vlanIdentification;
     }
 
     public String getVlanName() {

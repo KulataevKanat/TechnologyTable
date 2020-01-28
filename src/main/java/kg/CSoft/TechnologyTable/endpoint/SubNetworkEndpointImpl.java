@@ -25,7 +25,7 @@ public class SubNetworkEndpointImpl implements SubNetworkEndpoint {
         subNetwork.setName(subNetworkRequest.getName());
         subNetwork.setMask(subNetworkRequest.getMask());
         subNetwork.setAddress(subNetworkRequest.getAddress());
-        subNetwork.setVlanId(subNetworkRequest.getVlanId());
+        subNetwork.setVlanIdentification(subNetworkRequest.getVlanIdentification());
         subNetwork.setVlanName(subNetworkRequest.getVlanName());
         subNetwork.setDescription(subNetworkRequest.getDescription());
         subNetwork.setProject(project);
@@ -44,7 +44,7 @@ public class SubNetworkEndpointImpl implements SubNetworkEndpoint {
         if (subNetworkRequest.getName() != null) subNetwork.setName(subNetworkRequest.getName());
         if (subNetworkRequest.getMask() != null) subNetwork.setMask(subNetworkRequest.getMask());
         if (subNetworkRequest.getAddress() != null) subNetwork.setAddress(subNetworkRequest.getAddress());
-        if (subNetworkRequest.getVlanId() != null) subNetwork.setVlanId(subNetworkRequest.getVlanId());
+        if (subNetworkRequest.getVlanIdentification() != null) subNetwork.setVlanIdentification(subNetworkRequest.getVlanIdentification());
         if (subNetworkRequest.getVlanName() != null) subNetwork.setVlanName(subNetworkRequest.getVlanName());
         if (subNetworkRequest.getDescription() != null)
             subNetwork.setDescription(subNetworkRequest.getDescription());

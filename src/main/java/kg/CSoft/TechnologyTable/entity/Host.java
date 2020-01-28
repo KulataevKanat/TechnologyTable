@@ -21,8 +21,8 @@ public class Host {
     @Column(name = "host_password", columnDefinition = "varchar(100)")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "sub_network_id", columnDefinition = "integer")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sub_network_id", columnDefinition = "int4")
     private SubNetwork subNetwork;
 
     public Host() {
