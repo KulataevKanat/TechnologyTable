@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
@@ -142,21 +143,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     }
 
-    public void initIntegration() {
-        try {
-            authenticationManagerBuilder
-                    .authenticationProvider(ldapAuthenticationProvider());
-        } catch (Exception e) {
-            throw new BeanInitializationException("Security configuration failed", e);
-        }
-    }
-
-    @Bean
-    public LdapAuthenticationProvider ldapAuthenticationProvider() throws Exception {
-        LdapAuthenticationProvider lAP = new LdapAuthenticationProvider(ldapAuthenticator());
-        return lAP;
-    }
-
     @Bean
     public LdapContextSource ldapContextSource() throws Exception {
         PasswordPolicyAwareContextSource contextSource = new PasswordPolicyAwareContextSource(AD_URL);
@@ -165,11 +151,17 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         return contextSource;
     }
 
-    @Bean
-    public LdapAuthenticator ldapAuthenticator() throws Exception {
-        BindAuthenticator authenticator = new BindAuthenticator(ldapContextSource());
-        authenticator.setUserDnPatterns(new String[]{AD_DN_PATTERN});
-        return authenticator;
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .ldapAuthentication()
+                .userDnPatterns(AD_DN_PATTERN)
+                .contextSource(ldapContextSource()).contextSource()
+                .and()
+                .passwordCompare()
+                .passwordAttribute("password")
+                .and()
+                .passwordEncoder(newPasswordEncoder());
     }
 
     @Bean
@@ -179,7 +171,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder newPasswordEncoder() {
+        final LdapShaPasswordEncoder crypt = new LdapShaPasswordEncoder();
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return crypt.encode(rawPassword);
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return crypt.matches(rawPassword, encodedPassword.substring(7));
+            }
+        };
     }
+
 }

@@ -11,8 +11,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
+import org.springframework.ldap.query.LdapQueryBuilder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.naming.ldap.LdapName;
@@ -47,8 +50,7 @@ public class UserEndpointImpl implements UserEndpoint {
     @Override
     public ResponseEntity<?> signIn(AuthenticationRequest data) {
         String username = data.getUsername();
-        Filter sAMAccountName = new EqualsFilter("sAMAccountName", username);
-        ldapTemplate.authenticate(AD_BASE_DN, sAMAccountName.encode(), data.getPassword());
+        ldapTemplate.authenticate((LdapQueryBuilder.query().where("sAMAccountName").is(username)), data.getPassword());
         String token = jwtTokenProvider.createToken(username, userService.findByUsername(username).get(0).getRoles());
         Map<Object, Object> model = new HashMap<>();
         model.put("username", username);
