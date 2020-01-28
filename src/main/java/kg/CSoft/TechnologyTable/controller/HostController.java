@@ -2,8 +2,8 @@ package kg.CSoft.TechnologyTable.controller;
 
 import kg.CSoft.TechnologyTable.dto.host.HostDto;
 import kg.CSoft.TechnologyTable.dto.host.HostRequest;
-import kg.CSoft.TechnologyTable.endpoint.HostEndpoint;
-import kg.CSoft.TechnologyTable.service.HostService;
+import kg.CSoft.TechnologyTable.endpoint.host.HostEndpoint;
+import kg.CSoft.TechnologyTable.service.host.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

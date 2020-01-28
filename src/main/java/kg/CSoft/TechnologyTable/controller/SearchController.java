@@ -1,7 +1,7 @@
 package kg.CSoft.TechnologyTable.controller;
 
 import kg.CSoft.TechnologyTable.dto.search.SearchDto;
-import kg.CSoft.TechnologyTable.endpoint.SearchEndpoint;
+import kg.CSoft.TechnologyTable.endpoint.search.SearchEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

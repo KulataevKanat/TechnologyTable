@@ -1,8 +1,7 @@
 package kg.CSoft.TechnologyTable.controller;
 
 import kg.CSoft.TechnologyTable.dto.user.*;
-import kg.CSoft.TechnologyTable.endpoint.UserEndpoint;
-import kg.CSoft.TechnologyTable.service.UserService;
+import kg.CSoft.TechnologyTable.endpoint.user.UserEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

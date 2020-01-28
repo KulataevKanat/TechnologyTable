@@ -1,5 +1,6 @@
 package kg.CSoft.TechnologyTable.service;
 
+import kg.CSoft.TechnologyTable.service.user.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

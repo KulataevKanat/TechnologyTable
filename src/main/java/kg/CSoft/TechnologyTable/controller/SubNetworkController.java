@@ -1,9 +1,8 @@
 package kg.CSoft.TechnologyTable.controller;
 
-import kg.CSoft.TechnologyTable.dto.project.ProjectDto;
 import kg.CSoft.TechnologyTable.dto.subNetwork.SubNetworkDto;
 import kg.CSoft.TechnologyTable.dto.subNetwork.SubNetworkRequest;
-import kg.CSoft.TechnologyTable.endpoint.SubNetworkEndpoint;
+import kg.CSoft.TechnologyTable.endpoint.subNetwork.SubNetworkEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
