@@ -2,6 +2,8 @@ package kg.CSoft.TechnologyTable.entity;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -32,6 +34,9 @@ public class SubNetwork {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", columnDefinition = "int4")
     private Project project;
+
+    @OneToMany(mappedBy = "subNetwork", cascade = CascadeType.ALL)
+    private List<Host> hosts;
 
     public SubNetwork() {
     }
@@ -98,6 +103,14 @@ public class SubNetwork {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public List<Host> getHosts() {
+        return hosts;
+    }
+
+    public void setHosts(List<Host> hosts) {
+        this.hosts = hosts;
     }
 }
 

@@ -44,7 +44,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
-    public ErrorResponse unprocessableEntity(RuntimeException exception) {
+    public ErrorResponse unProcessableEntity(RuntimeException exception) {
         return new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, exception);
     }
 

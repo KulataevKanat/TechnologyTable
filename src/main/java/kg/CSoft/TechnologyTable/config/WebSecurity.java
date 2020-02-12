@@ -132,6 +132,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 //Swagger
                 .antMatchers(AUTH_WHITELIST).permitAll()
 
+                //...
+                .antMatchers("/error").permitAll()
+
                 .anyRequest()
                 .authenticated()
                 .and()

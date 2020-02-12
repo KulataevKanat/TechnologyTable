@@ -4,7 +4,7 @@ import io.jsonwebtoken.*;
 import kg.CSoft.TechnologyTable.config.JwtProperties;
 
 import kg.CSoft.TechnologyTable.exception.InvalidJwtAuthenticationException;
-import kg.CSoft.TechnologyTable.service.UserDetailsServiceImpl;
+import kg.CSoft.TechnologyTable.service.user.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

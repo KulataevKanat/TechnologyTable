@@ -22,14 +22,6 @@ public class ProjectAccessDto {
         this.userList = userList;
     }
 
-    public static List<HostDto> toList(List<Host> list) {
-        List<HostDto> resultList = new LinkedList<>();
-        for (Host host : list) {
-            resultList.add(new HostDto(host));
-        }
-        return resultList;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }

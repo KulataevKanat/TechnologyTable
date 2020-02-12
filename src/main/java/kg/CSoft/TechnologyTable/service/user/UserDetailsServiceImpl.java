@@ -1,4 +1,4 @@
-package kg.CSoft.TechnologyTable.service;
+package kg.CSoft.TechnologyTable.service.user;
 
 import kg.CSoft.TechnologyTable.service.user.UserService;
 import org.springframework.context.annotation.Lazy;
